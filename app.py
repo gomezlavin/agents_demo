@@ -2,13 +2,9 @@ from dotenv import load_dotenv
 import chainlit as cl
 import base64
 from agents.base_agent import Agent
+from agents.implementation_agent import ImplementationAgent  # Import ImplementationAgent
 
 load_dotenv()
-
-# Note: If switching to LangSmith, uncomment the following, and replace @observe with @traceable
-# from langsmith.wrappers import wrap_openai
-# from langsmith import traceable
-# client = wrap_openai(openai.AsyncClient())
 
 from langfuse.decorators import observe
 from langfuse.openai import AsyncOpenAI
@@ -46,7 +42,7 @@ options for implementation. Review pros/cons, and recommend a course of action.
 
 In a section labeled "Milestones", describe an ordered set of milestones for methodically \
 building the web page, so that errors can be detected and corrected early. Pay close attention \
-to the aligment of elements, and describe clear expectations in each milestone. Do not include \
+to the alignment of elements, and describe clear expectations in each milestone. Do not include \
 testing milestones, just implementation.
 
 Milestones should be formatted like this:
@@ -58,6 +54,7 @@ Milestones should be formatted like this:
 
 # Create an instance of the Agent class
 planning_agent = Agent(name="Planning Agent", client=client, prompt=PLANNING_PROMPT)
+implementation_agent = ImplementationAgent(name="Implementation Agent", client=client)
 
 @observe
 @cl.on_chat_start
@@ -113,3 +110,10 @@ async def on_message(message: cl.Message):
 
     message_history.append({"role": "assistant", "content": response_message})
     cl.user_session.set("message_history", message_history)
+
+# Function to call the Implementation Agent
+async def callAgent(agent_type):
+    if agent_type == 'implementation':
+        message_history = cl.user_session.get("message_history", [])
+        response_message = await implementation_agent.execute(message_history)
+        return response_message
