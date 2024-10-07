@@ -1,79 +1,24 @@
-# Chainlit Starter App
+# Week 4 - Project: Agents
+Last week, we explored how to implement functions, a powerful feature to enable LLMs to impact the real world via reading/writing to APIs. We saw the impact of prompts in creating consistent behavior, although even greater reliability requires fine-tuning (covered in Week 5).
 
-This project is a starter Chainlit application that demonstrates a simple integration with OpenAI's API. It showcases the following key features:
+Functions are great for simple tasks, but insufficient for higher level objectives. Researchers and developers have created the concept of agents to achieve goals that require many steps and error resolution.
 
-1. **OpenAI Integration**: The app is connected to OpenAI's API, allowing it to leverage state-of-the-art language models for generating responses.
+Agents are designed with capabilities such as:
 
-2. **Streaming Responses**: Instead of waiting for the entire response to be generated, the app streams the AI's response in real-time, providing a more interactive and engaging user experience.
+Planning - breaking down a goal into many steps
+Tool use - calling functions as necessary
+Memory - retaining short and long term context
+Orchestration - collaborating with other agents to achieve the objective.
+There are a number of popular agent frameworks:
 
-3. **Chat History**: The application maintains a conversation history, enabling context-aware responses and allowing for more coherent and meaningful interactions.
+LangChain
+LangGraph
+Microsoft Autogen
+CrewAI
+In my opinion, those frameworks are overengineered, brittle, and hard to debug. The reality is that the idea of agents is close to the frontier of LLM – currently difficult to make work in production. That said, model capabilities are advancing in leaps and bounds.
 
-4. **Environment Variable Management**: Sensitive information like API keys are managed securely using environment variables.
+Check out Devin: https://www.cognition.ai/blog/introducing-devin, where a research team has demonstrated a sophisticated agent capable of successfully navigating hundreds of steps to solve complex development tasks.
 
-5. **LangSmith Integration**: The app includes LangSmith for tracing and monitoring AI interactions, which can be useful for debugging and optimizing your AI application.
+In this lab, we're going to build our own agent framework and develop a primitive version of Devin. We'll explore planning strategies such as ReAct, Self-consistency, and Reflexion.
 
-As a convenience, on start of a new chat session, a system prompt is added as the first message in the chat history.
-
-## Getting Started
-
-### 1. Create a virtual environment
-
-First, create a virtual environment to isolate the project dependencies:
-```bash
-python -m venv .venv
-```
-
-### 2. Activate the virtual environment:
-
-- On Windows:
-  ```bash
-  .venv\Scripts\activate
-  ```
-- On macOS and Linux:
-  ```bash
-  source .venv/bin/activate
-  ```
-
-### 3. Install dependencies
-
-Install the project dependencies from the `requirements.txt` file:
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Set up environment variables
-
-- Copy the `.env.sample` file to a new file named `.env`
-- Fill in the `.env` file with your API keys
-
-## Running the app
-
-To run the app, use the following command:
-
-```bash
-chainlit run app.py -w
-``` 
-
-## Updating dependencies
-
-If you need to update the project dependencies, follow these steps:
-
-1. Update the `requirements.in` file with the new package or version.
-
-2. Install `pip-tools` if you haven't already:
-   ```bash
-   pip install pip-tools
-   ```
-
-3. Compile the new `requirements.txt` file:
-   ```bash
-   pip-compile requirements.in
-   ```
-
-4. Install the updated dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-This process ensures that all dependencies are properly resolved and pinned to specific versions for reproducibility.
+By the end of this lab, you should have a pretty good idea of what's happening behind the scenes at LangChain, CrewAI, et al.
